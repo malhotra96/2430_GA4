@@ -1,0 +1,231 @@
+#include<iostream>
+#include<stdlib.h>
+#include<stdio.h>
+using namespace std;
+
+class Player
+{
+private:
+    int number;
+    int age;
+    int minutes;
+    static int count=1;
+public:
+    Player *prev;
+    Player *next;
+    Player()
+    {
+        number = count;
+        age = 0;
+        minutes = 0;
+        incrementCount();
+    }
+    Player(int num,int a,int min)
+    {
+        number = num;
+        age= a;
+        minutes = min;
+    }
+    static void incrementCount()
+    {
+        if(count<=12)
+            count++;
+        else
+            cout<<"No more players can be added to the team";
+    }
+    int getAge()
+    {
+        return this.age;
+    }
+    int setAge(int a)
+    {
+        this.age = a;
+    }
+    int getNumber()
+    {
+        return this.number;
+    }
+    int getMinutes
+    {
+        return this.minutes;
+    }
+    void update_min()
+    {
+        this.minutes +=1;
+    }
+};
+
+class courtPlayer : public Player
+{
+private:
+    char status;
+public:
+    void setStatus()
+    {
+        status = 'C';
+    }
+    char getStatus()
+    {
+        return this.status;
+    }
+};
+
+class benchPlayer : public Player
+{
+private:
+    char status;
+public:
+    void setStatus()
+    {
+        status = 'B';
+    }
+    char getStatus()
+    {
+        return this.status;
+    }
+};
+
+class doubly_linked_list
+{
+private:
+    Player *head,*tail;
+public:
+    doubly_linked_list()
+    {
+        head=NULL;
+        tail=NULL;
+    }
+    void add_node(int num,int a,int min) // to add a new player to doubly linked list.
+    {
+        Player *temp= new Player(num,a,min);
+        temp->prev=NULL;
+        temp->next=NULL;
+
+        if(head==NULL)
+        {
+            head=temp;
+            tail=temp;
+        }
+        else
+        {
+            temp->prev=tail;
+            tail->next=temp;
+            tail=tail->next;
+        }
+    }
+    void del_node(int num) //to delete a node of randomly selected number from doubly linked list
+    {
+        Player *temp;
+        temp = head;
+        while(temp->number != num)
+        {
+            temp = temp->next;
+        }
+        if(temp == head)
+        {
+            head = head->next;
+            head->prev = NULL;
+            temp->next = NULL;
+            free(temp);
+        }
+        else if (temp == tail)
+        {
+            (temp->prev)->next = NULL;
+            temp->prev = NULL;
+            free(temp);
+        }
+        else
+        {
+            (temp->prev)->next = temp->next;
+            (temp->next)->prev = temp->prev;
+            free(temp);
+        }
+    }
+    //display function to be added here
+};
+
+class circular_linkedlist()
+{
+private:
+    Player *last;
+public:
+    circular_linkedlist()
+    {
+        last = NULL;
+    }
+    void add_player(int num,int a,int min) //to add the player at end of list
+    {
+        Player *temp = new Player(num,a,min);
+        if (last == NULL)
+        {
+            last = temp;
+            temp->next = last;
+        }
+        else
+        {
+            temp->next = last->next;
+            last->next = temp;
+            last = temp;
+        }
+    }
+    void add_after(int num,int a,int min) //to add the player according to the age for sorted list. Call this function after creating first node with add_player function (sorted circular list will automatically be created)
+    {
+        Player *temp = new Player(num,a,min);
+        Player *pos,*temp1;
+        pos = last->next;
+        while(pos->age < temp->age)
+        {
+            if (pos ! = last)
+            {
+                temp1 = pos;
+                pos = pos->next;
+            }
+            else
+            {
+                add_player(num,a,min);
+            }
+        }
+        if (pos != last)
+        {
+            temp1->next = temp;
+            temp->next = pos;
+        }
+    }
+    void del_player() //to delete the oldest player from circular linked list. Last points to the oldest player.
+    {
+        if(last->next != last)
+        {
+            Player *temp;
+            temp = last->next;
+            last->next = temp->next;
+            temp->next = NULL;
+            free(temp);
+        }
+        else
+        {
+            Player *temp;
+            temp = last;
+            last = NULL;
+            free(temp);
+        }
+    }
+    //display function to be added here
+};
+
+int main()
+{
+    /*
+    Create a list of players (array of class Players) sitting in waiting area. Then put a randomize function to get 5 random numbers between 1-12.
+    Then add that player in circular linked using using proper functions (first add_player function then for afterward players add_after function)
+    and remove the same player from linked list.
+    Afterwards when 5 players are added to circular linked list, start the timer thing in main function. Remove the player from circular linked list as soon as
+    it plays for 10% of its age and add the same player to doubly linked list. Then get the details for player to be added next to circular linked list from doubly  l      linked list and add him up in circular linked list(add_after function) and then remove from doubly linked list. Do same until all quarters of the game is done.         Then call display function of both the linked lists or add the elements of circular linked to doubly linked list back and display doubly linked list.
+    */
+    return 0;
+}
+
+/*
+I have created doubly linked list , circular linked list with all the classes required. You just need to add display function to both the linked lists.
+
+
+Basically main function is left and display function of both lists
